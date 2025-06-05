@@ -8,7 +8,7 @@ from fashion_hub_backend.database.db_setup import get_db
 from fashion_hub_backend.utils.oauth2 import get_current_active_user
 
 
-user_router = APIRouter(prefix="/v1", tags=["users"], dependencies=[Depends(get_current_active_user)])
+user_router = APIRouter(prefix="/v1", tags=["users"]) #, dependencies=[Depends(get_current_active_user)])
 
 @user_router.get("/users/me")
 def read_users_me(current_user: schemas.User = Depends(get_current_active_user)):
