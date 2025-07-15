@@ -32,9 +32,7 @@ SQLALCHEMY_DATABASE_URL = f"postgresql://{config.database_username}:{config.data
 # )
 
 print(SQLALCHEMY_DATABASE_URL)
-engine = create_engine(
-    url=SQLALCHEMY_DATABASE_URL, echo=config.debug_sql_echo, pool_pre_ping=True
-)
+engine = create_engine(url=SQLALCHEMY_DATABASE_URL, echo=config.debug_sql_echo, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -99,11 +97,7 @@ class Base(DeclarativeBase):
         set_columns = {
             column.name: column
             for column in query.excluded
-            if not (
-                column.primary_key
-                or column in index_elements
-                or column.name in index_elements
-            )
+            if not (column.primary_key or column in index_elements or column.name in index_elements)
         }
         return query.on_conflict_do_update(
             index_elements=index_elements,
@@ -136,9 +130,7 @@ def reset_table(db: Session, table: type[Base]):
         return
 
 
-def load_defaults(
-    db: Session, table: type[Base], file_path: str, recreate: bool = False
-):
+def load_defaults(db: Session, table: type[Base], file_path: str, recreate: bool = False):
     with open(file_path) as fs:
         table_data = json.load(fs)
 
@@ -154,11 +146,7 @@ def load_defaults(
                 db.add(new_row)
                 db.commit()
             except IntegrityError as e:
-                print(
-                    RuntimeWarning(
-                        f"Could not add row {row_data} in table {table.__name__}."
-                    )
-                )
+                print(RuntimeWarning(f"Could not add row {row_data} in table {table.__name__}."))
                 print(e)
 
 

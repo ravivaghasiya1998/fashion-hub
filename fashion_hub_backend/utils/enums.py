@@ -1,5 +1,7 @@
 from enum import auto
+
 from strenum import StrEnum
+
 
 class CategoryName(StrEnum):
     MEN = auto()
@@ -8,6 +10,7 @@ class CategoryName(StrEnum):
     ACCESSORIES = auto()
     ELECTRIC = auto()
     KITCHEN = auto()
+
 
 class OrderStatus(StrEnum):
     PENDING = auto()
@@ -21,6 +24,7 @@ class PaymentStatus(StrEnum):
     SUCCESS = auto()
     FAILED = auto()
     CANCELLED = auto()
+
 
 class PaymentMethod(StrEnum):
     CREDIT_CARD = auto()

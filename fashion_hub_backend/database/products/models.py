@@ -1,4 +1,3 @@
-
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -27,9 +26,7 @@ class Products(Base):
         ForeignKey("categories.name", onupdate="CASCADE", ondelete="CASCADE"),
         nullable=False,
     )
-    created_at: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
-    )
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     # Relationship with OrderItems table
     order_items: Mapped[list["OrderedItem"]] = relationship(

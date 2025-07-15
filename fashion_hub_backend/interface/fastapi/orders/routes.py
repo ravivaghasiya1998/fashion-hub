@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Depends, status
 
 from fashion_hub_backend.schemas.orders import schemas
@@ -9,9 +8,7 @@ order_router = APIRouter(prefix="/v1", tags=["orders"], dependencies=[Depends(ge
 
 
 @order_router.post("/orders", status_code=status.HTTP_201_CREATED)
-def create_order(
-    order: schemas.OrderCreate, service: OrderService = Depends(OrderService)
-) -> schemas.Order:
+def create_order(order: schemas.OrderCreate, service: OrderService = Depends(OrderService)) -> schemas.Order:
     order = service.create_order(order)
     service.commit()
     return order
@@ -24,9 +21,7 @@ def get_orders(service: OrderService = Depends(OrderService)) -> list[schemas.Or
 
 
 @order_router.get("/orders/{order_id}")
-def get_order(
-    order_id: int, service: OrderService = Depends(OrderService)
-) -> schemas.Order:
+def get_order(order_id: int, service: OrderService = Depends(OrderService)) -> schemas.Order:
     order = service.get_order(order_id)
     return order
 

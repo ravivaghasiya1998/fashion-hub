@@ -1,24 +1,19 @@
-
 from fastapi import APIRouter, Depends, status
-from typing import Annotated
+
 from fashion_hub_backend.schemas.users import schemas
 from fashion_hub_backend.service.users.service import UserService
-from fashion_hub_backend.service.authentication.service import AuthenticationService
-from fashion_hub_backend.database.db_setup import get_db
 from fashion_hub_backend.utils.oauth2 import get_current_active_user
 
-
-user_router = APIRouter(prefix="/v1", tags=["users"] , dependencies=[Depends(get_current_active_user)])
+user_router = APIRouter(prefix="/v1", tags=["users"], dependencies=[Depends(get_current_active_user)])
 
 
 @user_router.get("/users/me")
 def read_users_me(current_user: schemas.User = Depends(get_current_active_user)):
     return current_user
 
+
 @user_router.post("/users", status_code=status.HTTP_201_CREATED)
-def create_user(
-    user: schemas.UserCreate, service: UserService = Depends()
-) -> schemas.User:
+def create_user(user: schemas.UserCreate, service: UserService = Depends()) -> schemas.User:
     user = service.create_user(user)
     service.commit()
     return user
@@ -37,9 +32,7 @@ def get_user(user_id: int, service: UserService = Depends()) -> schemas.User:
 
 
 @user_router.put("/users/{user_id}")
-def update_user(
-    user_id: int, user: schemas.UserUpdare, service: UserService = Depends()
-) -> schemas.User:
+def update_user(user_id: int, user: schemas.UserUpdare, service: UserService = Depends()) -> schemas.User:
     user = service.update_user(user_id, user)
     service.commit()
     return user

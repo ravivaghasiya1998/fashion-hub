@@ -9,11 +9,9 @@ category_router = APIRouter(prefix="/v1", tags=["categories"], dependencies=[Dep
 
 @category_router.post("/categories", status_code=status.HTTP_201_CREATED)
 def create_category(
-    name: schemas.CategoryName,
-    description: str,
-    service: CategoryService = Depends()
+    name: schemas.CategoryName, description: str, service: CategoryService = Depends()
 ) -> schemas.Category:
-    category= schemas.CategoryCreate(name=name,description=description)
+    category = schemas.CategoryCreate(name=name, description=description)
     category = service.create_catogory(category)
     service.commit()
     return category
@@ -26,9 +24,7 @@ def get_categories(service: CategoryService = Depends()) -> list[schemas.Categor
 
 
 @category_router.get("/categories/{category_id}")
-def get_category(
-    category_id: int, service: CategoryService = Depends()
-) -> schemas.Category:
+def get_category(category_id: int, service: CategoryService = Depends()) -> schemas.Category:
     category = service.get_category(category_id)
     return category
 

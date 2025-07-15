@@ -1,21 +1,15 @@
 from datetime import datetime
-from enum import auto
 from typing import Optional
 from uuid import UUID, uuid4
 
-from strenum import StrEnum
-
 from fashion_hub_backend.utils.base_schemas import BaseSchema
-from fashion_hub_backend.utils.enums import OrderStatus,PaymentStatus, PaymentMethod
-
-
-
+from fashion_hub_backend.utils.enums import PaymentMethod, PaymentStatus
 
 
 class PaymentBase(BaseSchema):
     order_id: int
     user_id: int
-    transaction_id : UUID = uuid4()
+    transaction_id: UUID = uuid4()
     payment_method: PaymentMethod
     payment_status: PaymentStatus
 

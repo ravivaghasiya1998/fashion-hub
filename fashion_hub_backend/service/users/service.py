@@ -33,9 +33,7 @@ class UserService:
         return schemas.User.model_validate(new_user, from_attributes=True)
 
     def get_user(self, user_id: int):
-        user = self.db.scalars(
-            models.Users.select().where(models.Users.id == user_id)
-        ).first()
+        user = self.db.scalars(models.Users.select().where(models.Users.id == user_id)).first()
         if not user:
             raise APINotFound(detail=f"User with id: {user_id} does not exist")
         return schemas.User.model_validate(user, from_attributes=True)
@@ -44,14 +42,10 @@ class UserService:
         users = self.db.scalars(models.Users.select()).all()
         if users is None:
             raise APINotFound(detail="No users found")
-        return [
-            schemas.User.model_validate(user, from_attributes=True) for user in users
-        ]
+        return [schemas.User.model_validate(user, from_attributes=True) for user in users]
 
     def update_user(self, user_id: int, user: schemas.UserCreate):
-        user_exists = self.db.scalars(
-            models.Users.select().where(models.Users.id == user_id)
-        ).first()
+        user_exists = self.db.scalars(models.Users.select().where(models.Users.id == user_id)).first()
         if not user_exists:
             raise APINotFound(detail=f"User with id: {user_id} does not exist")
         if user.user_name is not None:
@@ -67,9 +61,7 @@ class UserService:
         return schemas.User.model_validate(user_exists, from_attributes=True)
 
     def delete_user(self, user_id: int):
-        user = self.db.scalars(
-            models.Users.select().where(models.Users.id == user_id)
-        ).first()
+        user = self.db.scalars(models.Users.select().where(models.Users.id == user_id)).first()
         if user is None:
             raise APINotFound(detail=f"User with id: {user_id} does not exist")
         self.db.delete(user)

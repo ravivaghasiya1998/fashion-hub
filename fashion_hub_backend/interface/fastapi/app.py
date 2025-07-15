@@ -12,16 +12,13 @@ from fashion_hub_backend.database.db_setup import (
 )
 from fashion_hub_backend.errors import APIBadRequest, APINotFound, DataBaseNotFound
 from fashion_hub_backend.interface.fastapi.app_config import RunMode, config
+from fashion_hub_backend.interface.fastapi.authentication.routes import authentication_router
 from fashion_hub_backend.interface.fastapi.categories.routes import category_router
 from fashion_hub_backend.interface.fastapi.order_items.routes import order_item_router
 from fashion_hub_backend.interface.fastapi.orders.routes import order_router
-from fashion_hub_backend.interface.fastapi.products.routes import product_router
-from fashion_hub_backend.interface.fastapi.authentication.routes import authentication_router
-from fashion_hub_backend.interface.fastapi.users.routes import user_router
 from fashion_hub_backend.interface.fastapi.payments.routes import payment_router
-
-
-
+from fashion_hub_backend.interface.fastapi.products.routes import product_router
+from fashion_hub_backend.interface.fastapi.users.routes import user_router
 
 
 @asynccontextmanager
@@ -38,7 +35,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan, debug=config.run_mode == RunMode.DEBUG,root_path="/api")
+app = FastAPI(lifespan=lifespan, debug=config.run_mode == RunMode.DEBUG, root_path="/api")
 
 if app.debug:
     app.add_middleware(
@@ -55,6 +52,7 @@ app.include_router(category_router)
 app.include_router(order_router)
 app.include_router(order_item_router)
 app.include_router(payment_router)
+
 
 # Error handlers
 @app.exception_handler(APIBadRequest)
@@ -82,4 +80,3 @@ def handle_database_not_found(request: Request, exc: DataBaseNotFound):
         )
     else:
         return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    

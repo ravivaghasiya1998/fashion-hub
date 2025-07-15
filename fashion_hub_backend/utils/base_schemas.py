@@ -16,9 +16,7 @@ class PydanticBaseSettings(BaseSettings):
     ALIAS_GENERATOR_NAME: Literal["to_camel", "to_snake", "to_pascal"] = "to_camel"
     POPULATE_BY_NAME: bool = True
 
-    model_config: SettingsConfigDict = SettingsConfigDict(
-        env_file=".env", extra="ignore"
-    )  # type: ignore [misc]
+    model_config: SettingsConfigDict = SettingsConfigDict(env_file=".env", extra="ignore")  # type: ignore [misc]
 
 
 # Load the settings

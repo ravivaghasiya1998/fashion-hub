@@ -1,13 +1,7 @@
 from datetime import datetime
-from enum import auto
-
-from strenum import StrEnum
 
 from fashion_hub_backend.utils.base_schemas import BaseSchema
-from fashion_hub_backend.utils.enums import OrderStatus,PaymentStatus 
-
-
-
+from fashion_hub_backend.utils.enums import OrderStatus, PaymentStatus
 
 
 class OrderBase(BaseSchema):

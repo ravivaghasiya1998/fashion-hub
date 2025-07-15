@@ -1,11 +1,9 @@
-
 from fastapi import APIRouter, Depends, status
 
 from fashion_hub_backend.schemas.payments import schemas
 from fashion_hub_backend.service.payments.service import PaymentService
-from fashion_hub_backend.utils.oauth2 import get_current_active_user
 
-payment_router = APIRouter(prefix="/v1", tags=["payment"]) #, dependencies=[Depends(get_current_active_user)])
+payment_router = APIRouter(prefix="/v1", tags=["payment"])  # , dependencies=[Depends(get_current_active_user)])
 
 
 @payment_router.post("/payments", status_code=status.HTTP_201_CREATED)
@@ -24,9 +22,7 @@ def get_payments(service: PaymentService = Depends(PaymentService)) -> list[sche
 
 
 @payment_router.get("/payments/{payment_id}")
-def get_payment(
-    payment_id: int, service: PaymentService = Depends(PaymentService)
-) -> schemas.Payment:
+def get_payment(payment_id: int, service: PaymentService = Depends(PaymentService)) -> schemas.Payment:
     order = service.get_payment(payment_id)
     return order
 
