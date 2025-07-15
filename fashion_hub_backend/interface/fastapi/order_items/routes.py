@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Depends, status
 
 from fashion_hub_backend.schemas.order_items import schemas
@@ -27,9 +26,7 @@ def get_orders(
 
 
 @order_item_router.get("/order_items/{order_item_id}")
-def get_order(
-    order_item_id: int, service: OrderItemService = Depends(OrderItemService)
-) -> schemas.OrderedItem:
+def get_order(order_item_id: int, service: OrderItemService = Depends(OrderItemService)) -> schemas.OrderedItem:
     order = service.get_order_item(order_item_id)
     return order
 
@@ -46,9 +43,7 @@ def update_order(
 
 
 @order_item_router.delete("/order_items/{order_item_id}")
-def delete_order(
-    order_item_id: int, service: OrderItemService = Depends(OrderItemService)
-):
+def delete_order(order_item_id: int, service: OrderItemService = Depends(OrderItemService)):
     msg = service.delete_order_item(order_item_id)
     service.commit()
     return msg

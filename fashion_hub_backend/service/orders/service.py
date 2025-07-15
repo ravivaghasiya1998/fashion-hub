@@ -16,9 +16,7 @@ class OrderService:
         return self.db.commit()
 
     def create_order(self, order: schemas.OrderCreate):
-        user = self.db.scalars(
-            user_models.Users.select().where(user_models.Users.id == order.user_id)
-        ).first()
+        user = self.db.scalars(user_models.Users.select().where(user_models.Users.id == order.user_id)).first()
         if not user:
             raise APINotFound(detail=f"User with id: {order.user_id} does not exist")
 
@@ -28,9 +26,7 @@ class OrderService:
         return schemas.Order.model_validate(new_order, from_attributes=True)
 
     def get_order(self, order_id: int):
-        order = self.db.scalars(
-            models.Orders.select().where(models.Orders.id == order_id)
-        ).first()
+        order = self.db.scalars(models.Orders.select().where(models.Orders.id == order_id)).first()
         if not order:
             raise APINotFound(detail=f"Order with id: {order_id} does not exist")
         return schemas.Order.model_validate(order, from_attributes=True)
@@ -39,15 +35,10 @@ class OrderService:
         orders = self.db.scalars(models.Orders.select()).all()
         if orders is None:
             raise APINotFound(detail="No orders found")
-        return [
-            schemas.Order.model_validate(order, from_attributes=True)
-            for order in orders
-        ]
+        return [schemas.Order.model_validate(order, from_attributes=True) for order in orders]
 
     def update_order(self, order_id: int, order: schemas.OrderUpdate):
-        order_exists = self.db.scalars(
-            models.Orders.select().where(models.Orders.id == order_id)
-        ).first()
+        order_exists = self.db.scalars(models.Orders.select().where(models.Orders.id == order_id)).first()
         if not order_exists:
             raise APINotFound(detail=f"Order with id: {order_id} does not exist")
         if order.order_status is not None:
@@ -58,9 +49,7 @@ class OrderService:
         return schemas.Order.model_validate(order_exists, from_attributes=True)
 
     def delete_order(self, order_id: int):
-        order = self.db.scalars(
-            models.Orders.select().where(models.Orders.id == order_id)
-        ).first()
+        order = self.db.scalars(models.Orders.select().where(models.Orders.id == order_id)).first()
         if order is None:
             raise APINotFound(detail=f"Order with id: {order_id} does not exist")
         self.db.delete(order)

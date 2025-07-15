@@ -11,8 +11,10 @@ class ProductBase(BaseSchema):
     category_id: int
     category_name: str
 
+
 class ProductCreateWithImage(ProductBase):
     image_path: str
+
 
 class ProductCreate(ProductBase):
     pass
@@ -21,5 +23,3 @@ class ProductCreate(ProductBase):
 class Product(ProductCreateWithImage):
     id: int
     created_at: datetime
-
-

@@ -3,7 +3,6 @@ This file contains exceptions classes for invalid API requests.
 """
 
 
-
 class ErrorBase(Exception):
     def __init__(self, detail: str = "unspecificed error"):
         """

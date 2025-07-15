@@ -19,9 +19,7 @@ class CategoryService:
             models.Categories.select().where(models.Categories.name == category.name)
         ).first()
         if category_exists:
-            raise APIBadRequest(
-                detail=f"Category with name: {category.name} already exists"
-            )
+            raise APIBadRequest(detail=f"Category with name: {category.name} already exists")
 
         category = category.model_dump(exclude_unset=True)
         query = models.Categories.insert().values([category])
@@ -29,9 +27,7 @@ class CategoryService:
         return schemas.Category.model_validate(new_category, from_attributes=True)
 
     def get_category(self, category_id: int):
-        category = self.db.scalars(
-            models.Categories.select().where(models.Categories.id == category_id)
-        ).first()
+        category = self.db.scalars(models.Categories.select().where(models.Categories.id == category_id)).first()
         if not category:
             raise APINotFound(detail=f"Category with id: {category_id} does not exist")
         return schemas.Category.model_validate(category, from_attributes=True)
@@ -40,15 +36,10 @@ class CategoryService:
         categories = self.db.scalars(models.Categories.select()).all()
         if categories is None:
             raise APINotFound(detail="No Categories found")
-        return [
-            schemas.Category.model_validate(category, from_attributes=True)
-            for category in categories
-        ]
+        return [schemas.Category.model_validate(category, from_attributes=True) for category in categories]
 
     def update_category(self, category_id: int, category: schemas.CategoryCreate):
-        category_exists = self.db.scalars(
-            models.Categories.select().where(models.Categories.id == category_id)
-        ).first()
+        category_exists = self.db.scalars(models.Categories.select().where(models.Categories.id == category_id)).first()
         if not category_exists:
             raise APINotFound(detail=f"Category with id: {category_id} does not exist")
         if category.name is not None:
@@ -59,9 +50,7 @@ class CategoryService:
         return schemas.Category.model_validate(category_exists, from_attributes=True)
 
     def delete_category(self, category_id: int):
-        category = self.db.scalars(
-            models.Categories.select().where(models.Categories.id == category_id)
-        ).first()
+        category = self.db.scalars(models.Categories.select().where(models.Categories.id == category_id)).first()
         if category is None:
             raise APINotFound(detail=f"Category with id: {category_id} does not exist")
         self.db.delete(category)

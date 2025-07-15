@@ -1,8 +1,7 @@
-
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
-from sqlalchemy.types import DateTime, Integer, String, Boolean
+from sqlalchemy.types import Boolean, DateTime, Integer, String
 
 from fashion_hub_backend.database.db_setup import Base
 
@@ -18,10 +17,7 @@ class Users(Base):
     phone_number: Mapped[str] = mapped_column(String, nullable=False)
     address: Mapped[dict] = mapped_column(JSONB, nullable=False)
     disabled: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
-    )
+    created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     orders: Mapped[list["Orders"]] = relationship("Orders", back_populates="user")
     payment: Mapped[list["Payment"]] = relationship("Payment", back_populates="user")
-

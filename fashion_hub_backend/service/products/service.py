@@ -17,21 +17,13 @@ class ProductService:
 
     def create_product(self, product: schemas.ProductCreateWithImage):
         category_exists = self.db.scalars(
-            category_models.Categories.select().where(
-                category_models.Categories.id == product.category_id
-            )
+            category_models.Categories.select().where(category_models.Categories.id == product.category_id)
         ).first()
         if not category_exists:
-            raise APIBadRequest(
-                detail=f"Category with id: {product.category_id} does not exist"
-            )
-        product_exists = self.db.scalars(
-            models.Products.select().where(models.Products.title == product.title)
-        ).first()
+            raise APIBadRequest(detail=f"Category with id: {product.category_id} does not exist")
+        product_exists = self.db.scalars(models.Products.select().where(models.Products.title == product.title)).first()
         if product_exists:
-            raise APIBadRequest(
-                detail=f"Product with name: {product.title} already exists"
-            )
+            raise APIBadRequest(detail=f"Product with name: {product.title} already exists")
         new_product = models.Products(**product.model_dump())
         self.db.add(new_product)
         self.commit()
@@ -41,9 +33,7 @@ class ProductService:
         return schemas.Product.model_validate(new_product, from_attributes=True)
 
     def get_product(self, product_id: int):
-        product = self.db.scalars(
-            models.Products.select().where(models.Products.id == product_id)
-        ).first()
+        product = self.db.scalars(models.Products.select().where(models.Products.id == product_id)).first()
         if not product:
             raise APINotFound(detail=f"Product with id: {product_id} does not exist")
         return schemas.Product.model_validate(product, from_attributes=True)
@@ -52,15 +42,10 @@ class ProductService:
         products = self.db.scalars(models.Products.select()).all()
         if products is None:
             raise APINotFound(detail="No products found")
-        return [
-            schemas.Product.model_validate(product, from_attributes=True)
-            for product in products
-        ]
+        return [schemas.Product.model_validate(product, from_attributes=True) for product in products]
 
     def update_product(self, product_id: int, product: schemas.ProductCreate):
-        product_exists = self.db.scalars(
-            models.Products.select().where(models.Products.id == product_id)
-        ).first()
+        product_exists = self.db.scalars(models.Products.select().where(models.Products.id == product_id)).first()
         if not product_exists:
             raise APINotFound(detail=f"Product with id: {product_id} does not exist")
         if product.title is not None:
@@ -75,9 +60,7 @@ class ProductService:
         return schemas.Product.model_validate(product_exists, from_attributes=True)
 
     def delete_product(self, product_id: int):
-        product = self.db.scalars(
-            models.Products.select().where(models.Products.id == product_id)
-        ).first()
+        product = self.db.scalars(models.Products.select().where(models.Products.id == product_id)).first()
         if product is None:
             raise APINotFound(detail=f"Product with id: {product_id} does not exist")
         self.db.delete(product)
