@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, Optional
 
 from sqlalchemy import (
     Column,
@@ -84,7 +84,7 @@ class Base(DeclarativeBase):
     def on_conflict_do_update(
         cls,
         query: Insert,
-        index_elements: list[str | Column] = None,
+        index_elements: Optional[list[str | Column]] = None,
     ):
         """
         Turns an INSERT statement into INSERT ... ON CONFLICT UPDATE,
@@ -125,7 +125,7 @@ def reset_table(db: Session, table: type[Base]):
         db.query(table).delete()
         db.commit()
         return
-    except:
+    except:  # noqa: E722
         print(f"Could not delete table {table}.")
         return
 

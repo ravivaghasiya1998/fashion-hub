@@ -33,7 +33,7 @@ class AuthenticationService:
         if user.disabled:
             raise APIBadRequest(detail="User is disabled. Please activate the user and try again.")
         access_token = create_access_token(data={"sub": user.email})
-        return auth_schemas.Token(access_token=access_token, token_type="bearer")
+        return auth_schemas.Token(access_token=access_token, token_type="bearer")  # noqa: S106
 
     def sign_up(self, user: user_schemas.UserCreate):
         user_exists = self.db.scalars(
