@@ -22,8 +22,16 @@ from sqlalchemy.schema import DropTable
 from fashion_hub_backend.errors import APINotFound
 from fashion_hub_backend.interface.fastapi.app_config import config
 
-# SQLALCHEMY_DATABASE_URL = f"postgresql://{config.database_username}:{config.database_password}@{config.database_hostname}:{config.database_port}/{config.database_name}"
-SQLALCHEMY_DATABASE_URL="postgresql://fashion_hub:iPwl96PN8zH0JPsCr0Hn4Rbo5U6vXjhC@dpg-d10ttrje5dus73amjmrg-a.frankfurt-postgres.render.com/fashion_hub_1j7i"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{config.database_username}:{config.database_password}@{config.database_hostname}:{config.database_port}/{config.database_name}"
+# SQLALCHEMY_DATABASE_URL="postgresql://fashion_hub:iPwl96PN8zH0JPsCr0Hn4Rbo5U6vXjhC@dpg-d10ttrje5dus73amjmrg-a.frankfurt-postgres.render.com/fashion_hub_1j7i"
+# SQLALCHEMY_DATABASE_URL = (
+#     f"postgresql://{config.database_username}:"
+#     f"{config.database_password}@{config.database_hostname}/"
+#     f"{config.database_name}"
+#     f"?sslmode=require&channel_binding=require"
+# )
+
+print(SQLALCHEMY_DATABASE_URL)
 engine = create_engine(
     url=SQLALCHEMY_DATABASE_URL, echo=config.debug_sql_echo, pool_pre_ping=True
 )

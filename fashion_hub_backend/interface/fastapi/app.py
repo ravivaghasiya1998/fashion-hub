@@ -82,3 +82,4 @@ def handle_database_not_found(request: Request, exc: DataBaseNotFound):
         )
     else:
         return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    

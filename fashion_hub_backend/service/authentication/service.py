@@ -46,3 +46,21 @@ class AuthenticationService:
             data={"sub": user.email}
         )
         return auth_schemas.Token(access_token=access_token, token_type="bearer")
+
+    def sign_up(self, user: user_schemas.UserCreate):
+        user_exists = self.db.scalars(
+            user_models.Users.select()
+            .where(user_models.Users.email == user.email)
+            .where(user_models.Users.phone_number == user.phone_number)
+        ).first()
+
+        if user_exists:
+            raise APIBadRequest(
+                detail=f"User with email: {user.email} and phone number: {user.phone_number} already exists"
+            )
+        user.password = Hash.bcrypt(user.password)
+        user = user.model_dump(exclude_unset=True)
+        query = user_models.Users.insert().values([user])
+        new_user = self.db.scalars(query).first()
+        self.commit()
+        return user_schemas.User.model_validate(new_user, from_attributes=True)

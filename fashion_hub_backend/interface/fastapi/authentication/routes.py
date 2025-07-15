@@ -22,3 +22,10 @@ def login(
     return token
 
 
+@authentication_router.post("/signup", response_model=user_schema.User)
+def signup(
+    user_data: user_schema.UserCreate,
+    service: AuthenticationService = Depends()
+):
+    new_user = service.sign_up(user_data)
+    return new_user
