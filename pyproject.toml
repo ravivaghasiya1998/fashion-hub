@@ -46,7 +46,7 @@ select = [
     "G", "C901", "S", "TID", "TCH", "INT", "FLY002", "ISC", "ICN"
 ]
 ignore = [
-    "PLR2004", "ISC001", "N806", "B008", "PLR0913", "RUF012", "TC001", "F821"
+    "PLR2004", "ISC001", "N806", "B008", "PLR0913", "RUF012", "TC001", "F821","B904"
 ]
 exclude = [
     ".git", ".venv", ".pyenv", "venv", "__pycache__", "__target__", "dist"

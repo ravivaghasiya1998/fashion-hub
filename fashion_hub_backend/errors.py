@@ -3,7 +3,7 @@ This file contains exceptions classes for invalid API requests.
 """
 
 
-class ErrorBase(Exception):
+class ErrorBase(Exception):  # noqa: N818
     def __init__(self, detail: str = "unspecificed error"):
         """
         detail: Details on the error, can be returned by the API.

@@ -2,8 +2,8 @@ from datetime import datetime, timedelta, timezone
 
 import jwt
 from jwt.exceptions import InvalidTokenError
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 from fashion_hub_backend.schemas.authentication import schemas as auth_schemas
 
 # SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -17,6 +17,7 @@ class JWTSetting(BaseSettings):
     access_token_expire_minutes: int = 30
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+
 
 jwtconfig = JWTSetting()
 
@@ -40,6 +41,6 @@ def verify_token(token: str, credentials_exception):
             raise credentials_exception
         token_data = auth_schemas.TokenData(email=email)
     except InvalidTokenError:
-        raise credentials_exception #noqa: B904
+        raise credentials_exception
 
     return token_data
